@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">{% if puesto %}Editar Puesto{% else %}Agregar Nuevo Puesto{% endif %}</h2>
+
+    <form action="{{ url_for('gestionar_puesto', id_puestos=puesto.id_puestos if puesto else None) }}" method="post">
+        
+        <div class="form-group mb-3">
+            <label for="nombre">Nombre:</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ puesto.nombre if puesto }}" required>
+        </div>
+        
+        <div class="form-group mb-3">
+            <label for="descripcion">Descripción:</label>
+            <textarea class="form-control" id="descripcion" name="descripcion" rows="3">{{ puesto.descripcion if puesto }}</textarea>
+        </div>
+        
+        <div class="form-group mb-3">
+            <label for="salario_base">Salario Base:</label>
+            <input type="number" class="form-control" id="salario_base" name="salario_base" value="{{ puesto.salario_base if puesto }}" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{{ url_for('listar_puestos') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Listado de Capacitaciones</h2>
+    <a href="{{ url_for('gestionar_capacitacion') }}" class="btn btn-primary mb-3">Agregar Nueva Capacitación</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="table-responsive draggable-table-container">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>ID Empleado</th>
+                    <th>Empleado</th>
+                    <th>Curso</th>
+                    <th>Institución</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Certificado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for capacitacion in capacitaciones %}
+                <tr>
+                    <td>{{ capacitacion.id_capacitaciones }}</td>
+                    <td>{{ capacitacion.id_empleado }}</td>
+                    <td>{{ capacitacion.empleado_nombre }} {{ capacitacion.empleado_apellido }}</td>
+                    <td>{{ capacitacion.nombre_curso }}</td>
+                    <td>{{ capacitacion.institucion }}</td>
+                    <td>{{ capacitacion.fecha_inicio }}</td>
+                    <td>{{ capacitacion.fecha_fin }}</td>
+                    <td>
+                        {% if capacitacion.certificado %}
+                            <a href="{{ capacitacion.certificado }}" target="_blank">Sí</a>
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('gestionar_capacitacion', id_capacitaciones=capacitacion.id_capacitaciones) }}" class="btn btn-custom-edit btn-sm">Editar</a>
+                        <form action="{{ url_for('eliminar_capacitacion', id_capacitaciones=capacitacion.id_capacitaciones) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar esta capacitación?');">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">{% if contrato %}Editar Contrato{% else %}Agregar Nuevo Contrato{% endif %}</h2>
+
+    <form action="{{ url_for('gestionar_contrato', id_contratos=contrato.id_contratos if contrato else None) }}" method="post">
+        
+        <div class="form-group mb-3">
+            <label for="id_empleado">Empleado:</label>
+            <select class="form-control" id="id_empleado" name="id_empleado" required>
+                <option value="">Seleccione un empleado</option>
+                {% for empleado in empleados %}
+                <option value="{{ empleado.id_empleados }}" {% if contrato and contrato.id_empleado == empleado.id_empleados %}selected{% endif %}>
+                    {{ empleado.nombre }} {{ empleado.apellido }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="tipo_contrato">Tipo de Contrato:</label>
+            <input type="text" class="form-control" id="tipo_contrato" name="tipo_contrato" value="{{ contrato.tipo_contrato if contrato }}" required>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group mb-3">
+                <label for="fecha_inicio">Fecha de Inicio:</label>
+                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{ contrato.fecha_inicio if contrato }}" required>
+            </div>
+            <div class="col-md-6 form-group mb-3">
+                <label for="fecha_fin">Fecha de Fin:</label>
+                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{ contrato.fecha_fin if contrato }}">
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="salario">Salario:</label>
+            <input type="number" class="form-control" id="salario" name="salario" value="{{ contrato.salario if contrato }}" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{{ url_for('listar_contratos') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

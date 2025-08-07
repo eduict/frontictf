@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Listado de Postulantes</h2>
+    <a href="{{ url_for('gestionar_postulante') }}" class="btn btn-primary mb-3">Agregar Nuevo Postulante</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="table-responsive draggable-table-container">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Completo</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Dirección</th>
+                    <th>Nacionalidad</th>
+                    <th>Nivel Educativo</th>
+                    <th>Experiencia Previa</th>
+                    <th>Puesto</th>
+                    <th>Comuna</th>
+                    <th>Fecha Postulación</th>
+                    <th>Estado</th>
+                    <th>Comentarios</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for postulante in postulantes %}
+                <tr>
+                    <td>{{ postulante.id_postulantes }}</td>
+                    <td>{{ postulante.nombre }} {{ postulante.apellido }}</td>
+                    <td>{{ postulante.fecha_nacimiento if postulante.fecha_nacimiento else 'N/A' }}</td>
+                    <td>{{ postulante.correo }}</td>
+                    <td>{{ postulante.telefono }}</td>
+                    <td>{{ postulante.direccion }}</td>
+                    <td>{{ postulante.nacionalidad }}</td>
+                    <td>{{ postulante.nivel_educativo }}</td>
+                    <td>{{ postulante.experiencia_previa }}</td>
+                    <td>{{ postulante.puesto_nombre if postulante.puesto_nombre else 'N/A' }}</td>
+                    <td>{{ postulante.comuna_nombre if postulante.comuna_nombre else 'N/A' }}</td>
+                    <td>{{ postulante.fecha_postulacion }}</td>
+                    <td>{{ postulante.estado }}</td>
+                    <td>{{ postulante.comentarios }}</td>
+                    <td>
+                        <a href="{{ url_for('gestionar_postulante', id_postulantes=postulante.id_postulantes) }}" class="btn btn-custom-edit btn-sm">Editar</a>
+                        <form action="{{ url_for('eliminar_postulante', id_postulantes=postulante.id_postulantes) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar este postulante?');">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

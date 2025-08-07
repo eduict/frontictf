@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Listado de Empleados</h2>
+    <a href="{{ url_for('gestionar_empleado') }}" class="btn btn-primary mb-3">Agregar Nuevo Empleado</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="table-responsive draggable-table-container">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID Empleado</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Estado Civil</th>
+                    <th>Nacionalidad</th>
+                    <th>Fecha Ingreso</th>
+                    <th>ID Comuna</th>
+                    <th>Comuna</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for empleado in empleados %}
+                <tr>
+                    <td>{{ empleado.id_empleados }}</td>
+                    <td>{{ empleado.nombre }}</td>
+                    <td>{{ empleado.apellido }}</td>
+                    <td>{{ empleado.fecha_nacimiento if empleado.fecha_nacimiento else 'N/A' }}</td>
+                    <td>{{ empleado.direccion }}</td>
+                    <td>{{ empleado.telefono }}</td>
+                    <td>{{ empleado.correo }}</td>
+                    <td>{{ empleado.estado_civil }}</td>
+                    <td>{{ empleado.nacionalidad }}</td>
+                    <td>{{ empleado.fecha_ingreso }}</td>
+                    <td>{{ empleado.id_comuna if empleado.id_comuna else 'N/A' }}</td>
+                    <td>{{ empleado.comuna_nombre if empleado.comuna_nombre else 'N/A' }}</td>
+                    <td>
+                        <a href="{{ url_for('gestionar_empleado', id_empleados=empleado.id_empleados) }}" class="btn btn-custom-edit btn-sm">Editar</a>
+                        <form action="{{ url_for('eliminar_empleado', id_empleados=empleado.id_empleados) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar a este empleado?');">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

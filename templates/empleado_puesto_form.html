@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}{% if asignacion %}Editar Asignación{% else %}Nueva Asignación{% endif %}{% endblock %}
+
+{% block content %}
+    <h2>{% if asignacion %}Editar{% else %}Nueva{% endif %} Asignación de Puesto</h2>
+    <hr>
+
+    <form method="post" action="{{ url_for('gestionar_empleado_puesto', id=asignacion.id if asignacion else None) }}">
+        <div class="mb-3">
+            <label for="id_empleado" class="form-label">Empleado</label>
+            <select class="form-select" id="id_empleado" name="id_empleado" required>
+                <option value="">Seleccione un empleado...</option>
+                {% for empleado in empleados %}
+                    <option value="{{ empleado.id }}" {% if asignacion and asignacion.id_empleado == empleado.id %}selected{% endif %}>
+                        {{ empleado.nombre }} {{ empleado.apellido }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label for="id_puesto" class="form-label">Puesto</label>
+            <select class="form-select" id="id_puesto" name="id_puesto" required>
+                <option value="">Seleccione un puesto...</option>
+                {% for puesto in puestos %}
+                    <option value="{{ puesto.id }}" {% if asignacion and asignacion.id_puesto == puesto.id %}selected{% endif %}>
+                        {{ puesto.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="especialidad_docente" class="form-label">Especialidad Docente (Opcional)</label>
+            <input type="text" class="form-control" id="especialidad_docente" name="especialidad_docente" value="{{ asignacion.especialidad_docente if asignacion else '' }}">
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i> Guardar</button>
+            <a href="{{ url_for('listar_empleado_puesto') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+{% endblock %}

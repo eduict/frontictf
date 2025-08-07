@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <a href="#" onclick="history.back();" class="btn btn-secondary mb-4">
+        ← Volver
+    </a>
+    
+    <h2 class="mb-4">{% if comuna %}Editar Comuna{% else %}Agregar Nueva Comuna{% endif %}</h2>
+
+    <form action="{{ url_for('gestionar_comuna', id_comuna=comuna.id_comuna if comuna else None) }}" method="post">
+        
+        <div class="form-group mb-3">
+            <label for="comuna">Nombre de la Comuna:</label>
+            <input type="text" class="form-control" id="comuna" name="comuna" value="{{ comuna.comuna if comuna }}" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="{{ url_for('listar_comunas') }}" class="btn btn-secondary">Cancelar</a>
+        
+    </form>
+</div>
+{% endblock %}

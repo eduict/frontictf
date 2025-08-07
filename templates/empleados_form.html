@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">{% if empleado %}Editar Empleado{% else %}Agregar Nuevo Empleado{% endif %}</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <form action="{% if empleado %}{{ url_for('gestionar_empleado', id_empleados=empleado.id_empleados) }}{% else %}{{ url_for('gestionar_empleado') }}{% endif %}" method="post">
+        
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre:</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ empleado.nombre if empleado else '' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido:</label>
+            <input type="text" class="form-control" id="apellido" name="apellido" value="{{ empleado.apellido if empleado else '' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento:</label>
+            <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ empleado.fecha_nacimiento if empleado and empleado.fecha_nacimiento else '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección:</label>
+            <textarea class="form-control" id="direccion" name="direccion" rows="3">{{ empleado.direccion if empleado else '' }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono:</label>
+            <input type="tel" class="form-control" id="telefono" name="telefono" value="{{ empleado.telefono if empleado else '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="correo" class="form-label">Correo Electrónico:</label>
+            <input type="email" class="form-control" id="correo" name="correo" value="{{ empleado.correo if empleado else '' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="estado_civil" class="form-label">Estado Civil:</label>
+            <input type="text" class="form-control" id="estado_civil" name="estado_civil" value="{{ empleado.estado_civil if empleado else '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="nacionalidad" class="form-label">Nacionalidad:</label>
+            <input type="text" class="form-control" id="nacionalidad" name="nacionalidad" value="{{ empleado.nacionalidad if empleado else '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="fecha_ingreso" class="form-label">Fecha de Ingreso:</label>
+            <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" value="{{ empleado.fecha_ingreso if empleado and empleado.fecha_ingreso else '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="id_comuna" class="form-label">Comuna:</label>
+            <select class="form-control" id="id_comuna" name="id_comuna">
+                <option value="">Seleccione una comuna</option>
+                {% for comuna in comunas %}
+                    <option value="{{ comuna.id_comuna }}" {% if empleado and empleado.id_comuna == comuna.id_comuna %}selected{% endif %}>{{ comuna.comuna }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="{{ url_for('listar_empleados') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

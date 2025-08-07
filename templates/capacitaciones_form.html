@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">{% if capacitacion %}Editar Capacitación{% else %}Agregar Nueva Capacitación{% endif %}</h2>
+
+    <form action="{{ url_for('gestionar_capacitacion', id_capacitaciones=capacitacion.id_capacitaciones if capacitacion else None) }}" method="post">
+        
+        <div class="form-group mb-3">
+            <label for="id_empleado">Empleado:</label>
+            <select class="form-control" id="id_empleado" name="id_empleado" required>
+                <option value="">Seleccione un empleado</option>
+                {% for empleado in empleados %}
+                <option value="{{ empleado.id_empleados }}" {% if capacitacion and capacitacion.id_empleado == empleado.id_empleados %}selected{% endif %}>
+                    {{ empleado.nombre }} {{ empleado.apellido }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="nombre_curso">Nombre del Curso:</label>
+            <input type="text" class="form-control" id="nombre_curso" name="nombre_curso" value="{{ capacitacion.nombre_curso if capacitacion }}" required>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="institucion">Institución:</label>
+            <input type="text" class="form-control" id="institucion" name="institucion" value="{{ capacitacion.institucion if capacitacion }}" required>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group mb-3">
+                <label for="fecha_inicio">Fecha de Inicio:</label>
+                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{ capacitacion.fecha_inicio if capacitacion }}">
+            </div>
+            <div class="col-md-6 form-group mb-3">
+                <label for="fecha_fin">Fecha de Fin:</label>
+                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{ capacitacion.fecha_fin if capacitacion }}">
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="certificado">Certificado (URL):</label>
+            <input type="text" class="form-control" id="certificado" name="certificado" value="{{ capacitacion.certificado if capacitacion }}">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{{ url_for('listar_capacitaciones') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

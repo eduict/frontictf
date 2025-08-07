@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">{% if postulante %}Editar Postulante{% else %}Agregar Nuevo Postulante{% endif %}</h2>
+
+    <form action="{{ url_for('gestionar_postulante', id_postulantes=postulante.id_postulantes if postulante else None) }}" method="post">
+        
+        <div class="row">
+            <div class="col-md-6 form-group mb-3">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ postulante.nombre if postulante }}" required>
+            </div>
+            <div class="col-md-6 form-group mb-3">
+                <label for="apellido">Apellido:</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" value="{{ postulante.apellido if postulante }}" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group mb-3">
+                <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ postulante.fecha_nacimiento if postulante }}">
+            </div>
+            <div class="col-md-6 form-group mb-3">
+                <label for="correo">Correo Electrónico:</label>
+                <input type="email" class="form-control" id="correo" name="correo" value="{{ postulante.correo if postulante }}" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group mb-3">
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" class="form-control" id="telefono" name="telefono" value="{{ postulante.telefono if postulante }}">
+            </div>
+            <div class="col-md-6 form-group mb-3">
+                <label for="nacionalidad">Nacionalidad:</label>
+                <input type="text" class="form-control" id="nacionalidad" name="nacionalidad" value="{{ postulante.nacionalidad if postulante }}">
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="direccion">Dirección:</label>
+            <textarea class="form-control" id="direccion" name="direccion" rows="2">{{ postulante.direccion if postulante }}</textarea>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group mb-3">
+                <label for="id_comuna">Comuna:</label>
+                <select class="form-control" id="id_comuna" name="id_comuna">
+                    <option value="">Seleccione una comuna</option>
+                    {% for comuna in comunas %}
+                    <option value="{{ comuna.id_comuna }}" {% if postulante and postulante.id_comuna == comuna.id_comuna %}selected{% endif %}>
+                        {{ comuna.comuna }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 form-group mb-3">
+                <label for="id_puesto">Puesto al que Postula:</label>
+                <select class="form-control" id="id_puesto" name="id_puesto">
+                    <option value="">Seleccione un puesto</option>
+                    {% for puesto in puestos %}
+                    <option value="{{ puesto.id_puestos }}" {% if postulante and postulante.id_puesto == puesto.id_puestos %}selected{% endif %}>
+                        {{ puesto.nombre }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="nivel_educativo">Nivel Educativo:</label>
+            <input type="text" class="form-control" id="nivel_educativo" name="nivel_educativo" value="{{ postulante.nivel_educativo if postulante }}">
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="experiencia_previa">Experiencia Previa:</label>
+            <textarea class="form-control" id="experiencia_previa" name="experiencia_previa" rows="3">{{ postulante.experiencia_previa if postulante }}</textarea>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group mb-3">
+                <label for="fecha_postulacion">Fecha de Postulación:</label>
+                <input type="date" class="form-control" id="fecha_postulacion" name="fecha_postulacion" value="{{ postulante.fecha_postulacion if postulante }}">
+            </div>
+            <div class="col-md-6 form-group mb-3">
+                <label for="estado">Estado:</label>
+                <select class="form-control" id="estado" name="estado" required>
+                    <option value="Pendiente" {% if postulante and postulante.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                    <option value="Entrevistado" {% if postulante and postulante.estado == 'Entrevistado' %}selected{% endif %}>Entrevistado</option>
+                    <option value="Aceptado" {% if postulante and postulante.estado == 'Aceptado' %}selected{% endif %}>Aceptado</option>
+                    <option value="Rechazado" {% if postulante and postulante.estado == 'Rechazado' %}selected{% endif %}>Rechazado</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group mb-3">
+            <label for="comentarios">Comentarios:</label>
+            <textarea class="form-control" id="comentarios" name="comentarios" rows="3">{{ postulante.comentarios if postulante }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{{ url_for('listar_postulantes') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

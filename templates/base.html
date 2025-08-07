@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de RRHH</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilos generales del cuerpo y el texto */
+        body {
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Estilos de la barra de navegación */
+        .navbar-brand {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .nav-link:hover {
+            color: #DA9CFF !important; /* El color de tu elección */
+        }
+
+        /* Estilos del menú desplegable */
+        .dropdown-menu {
+            background-color: #111; /* Fondo del menú (gris muy claro) */
+            border: 1px solid rgb(255, 250, 250); /* Borde del menú */
+        }
+
+        .dropdown-item {
+            color: #fff; /* Color del texto de cada opción */
+        }
+        
+        .dropdown-item:hover {
+            background-color: #DA9CFF; /* Fondo al pasar el mouse (tu color personalizado) */
+            color: #212529; /* Color del texto al pasar el mouse */
+        }
+
+        /* Estilo para el contenedor del jumbotron de la página de inicio */
+        .custom-jumbotron {
+            background-color: #212529;
+        }
+    
+        /* Estilos para las tablas */
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+    
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+    
+        .table-bordered {
+           border-color: #dee2e6;
+           border-width: 5px; /* Cambia este valor al grosor que desees */
+        }
+    
+        .table-striped {
+            color: #212529;
+        }
+        
+        .thead-dark th {
+            background-color: #343a40;
+            color: white;
+        }
+    
+        /* Estilos para el contenedor de la tabla arrastrable */
+        .draggable-table-container {
+            position: relative;
+            cursor: grab;
+            user-select: none;
+        }
+        
+        .draggable-table-container:active {
+            cursor: grabbing;
+        }
+    
+        /* Estilo para el nuevo color del botón Editar */
+        .btn-custom-edit {
+            background-color: #DA9CFF;
+            border-color: #DA9CFF;
+            color: #333;
+        }
+    
+        /* Estilo para el efecto hover (cuando pasas el mouse por encima) */
+        .btn-custom-edit:hover {
+            background-color: #C782F4;
+            border-color: #C782F4;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Gestión de RRHH</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownEmpleados" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Empleados
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownEmpleados">
+                            <li><a class="dropdown-item" href="{{ url_for('listar_empleados') }}">Listado de Empleados</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_contratos') }}">Listado de Contratos</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_empleado_puesto') }}">Puestos Asignados</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProcesos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Procesos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownProcesos">
+                            <li><a class="dropdown-item" href="{{ url_for('listar_capacitaciones') }}">Capacitaciones</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_permisos') }}">Permisos</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownReclutamiento" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Reclutamiento
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownReclutamiento">
+                            <li><a class="dropdown-item" href="{{ url_for('listar_puestos') }}">Listado de Puestos</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_postulantes') }}">Listado de Postulantes</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_seguimiento_postulantes') }}">Seguimiento de Postulantes</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('listar_comunas') }}">Comunas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container-fluid">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableContainers = document.querySelectorAll('.draggable-table-container');
+
+            tableContainers.forEach(tableContainer => {
+                let isDragging = false;
+                let startX, startY, scrollLeft, scrollTop;
+
+                tableContainer.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    tableContainer.style.cursor = 'grabbing';
+                    startX = e.pageX - tableContainer.offsetLeft;
+                    startY = e.pageY - tableContainer.offsetTop;
+                    scrollLeft = tableContainer.scrollLeft;
+                    scrollTop = tableContainer.scrollTop;
+                });
+
+                tableContainer.addEventListener('mouseleave', () => {
+                    isDragging = false;
+                    tableContainer.style.cursor = 'grab';
+                });
+
+                tableContainer.addEventListener('mouseup', () => {
+                    isDragging = false;
+                    tableContainer.style.cursor = 'grab';
+                });
+
+                tableContainer.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    const x = e.pageX - tableContainer.offsetLeft;
+                    const y = e.pageY - tableContainer.offsetTop;
+                    const walkX = (x - startX) * 1.5;
+                    const walkY = (y - startY) * 1.5;
+                    tableContainer.scrollLeft = scrollLeft - walkX;
+                    tableContainer.scrollTop = scrollTop - walkY;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

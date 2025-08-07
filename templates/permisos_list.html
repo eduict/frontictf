@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Listado de Permisos</h2>
+    <a href="{{ url_for('gestionar_permiso') }}" class="btn btn-primary mb-3">Agregar Nuevo Permiso</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="table-responsive draggable-table-container">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>ID Empleado</th>
+                    <th>Empleado</th>
+                    <th>Tipo</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Estado</th>
+                    <th>Motivo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for permiso in permisos %}
+                <tr>
+                    <td>{{ permiso.id_permisos }}</td>
+                    <td>{{ permiso.id_empleado }}</td>
+                    <td>{{ permiso.empleado_nombre }} {{ permiso.empleado_apellido }}</td>
+                    <td>{{ permiso.tipo }}</td>
+                    <td>{{ permiso.fecha_inicio }}</td>
+                    <td>{{ permiso.fecha_fin }}</td>
+                    <td>{{ permiso.estado }}</td>
+                    <td>{{ permiso.motivo if permiso.motivo else 'N/A' }}</td>
+                    <td>
+                        <a href="{{ url_for('gestionar_permiso', id_permisos=permiso.id_permisos) }}" class="btn btn-custom-edit btn-sm">Editar</a>
+                        <form action="{{ url_for('eliminar_permiso', id_permisos=permiso.id_permisos) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar este permiso?');">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

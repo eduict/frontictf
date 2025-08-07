@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">{% if permiso %}Editar Permiso{% else %}Agregar Nuevo Permiso{% endif %}</h2>
+
+    <form action="{{ url_for('gestionar_permiso', id_permisos=permiso.id_permisos if permiso else None) }}" method="post">
+        
+        <div class="form-group mb-3">
+            <label for="id_empleado">Empleado:</label>
+            <select class="form-control" id="id_empleado" name="id_empleado" required>
+                {% for empleado in empleados %}
+                <option value="{{ empleado.id_empleados }}" {% if permiso and permiso.id_empleado == empleado.id_empleados %}selected{% endif %}>
+                    {{ empleado.nombre }} {{ empleado.apellido }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="tipo">Tipo de Permiso:</label>
+            <select class="form-control" id="tipo" name="tipo" required>
+                <option value="Vacaciones" {% if permiso and permiso.tipo == 'Vacaciones' %}selected{% endif %}>Vacaciones</option>
+                <option value="Licencia Médica" {% if permiso and permiso.tipo == 'Licencia Médica' %}selected{% endif %}>Licencia Médica</option>
+                <option value="Permiso Personal" {% if permiso and permiso.tipo == 'Permiso Personal' %}selected{% endif %}>Permiso Personal</option>
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group mb-3">
+                <label for="fecha_inicio">Fecha de Inicio:</label>
+                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{ permiso.fecha_inicio if permiso }}" required>
+            </div>
+            <div class="col-md-6 form-group mb-3">
+                <label for="fecha_fin">Fecha de Fin:</label>
+                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{ permiso.fecha_fin if permiso }}">
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="estado">Estado:</label>
+            <select class="form-control" id="estado" name="estado" required>
+                <option value="Pendiente" {% if permiso and permiso.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                <option value="Aprobado" {% if permiso and permiso.estado == 'Aprobado' %}selected{% endif %}>Aprobado</option>
+                <option value="Rechazado" {% if permiso and permiso.estado == 'Rechazado' %}selected{% endif %}>Rechazado</option>
+            </select>
+        </div>
+        
+        <div class="form-group mb-3">
+            <label for="motivo">Motivo:</label>
+            <textarea class="form-control" id="motivo" name="motivo" rows="3">{{ permiso.motivo if permiso }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{{ url_for('listar_permisos') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -2,6 +2,11 @@
 {% block title %}{% if asignacion %}Editar Asignación{% else %}Nueva Asignación{% endif %}{% endblock %}
 
 {% block content %}
+<div class="container mt-4">
+    <a href="{{ url_for('listar_empleado_puesto') }}" class="btn btn-secondary mb-4">
+        ← Volver
+    </a>
+    
     <h2>{% if asignacion %}Editar{% else %}Nueva{% endif %} Asignación de Puesto</h2>
     <hr>
 
@@ -36,8 +41,9 @@
         </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i> Guardar</button>
+            <button type="submit" class="btn btn-purple">Guardar</button>
             <a href="{{ url_for('listar_empleado_puesto') }}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
+</div>
 {% endblock %}

@@ -2,6 +2,10 @@
 
 {% block content %}
 <div class="container mt-4">
+    <a href="{{ url_for('listar_capacitaciones') }}" class="btn btn-secondary mb-4">
+        ← Volver
+    </a>
+    
     <h2 class="mb-4">{% if capacitacion %}Editar Capacitación{% else %}Agregar Nueva Capacitación{% endif %}</h2>
 
     <form action="{{ url_for('gestionar_capacitacion', id_capacitaciones=capacitacion.id_capacitaciones if capacitacion else None) }}" method="post">
@@ -44,8 +48,10 @@
             <input type="text" class="form-control" id="certificado" name="certificado" value="{{ capacitacion.certificado if capacitacion }}">
         </div>
         
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="{{ url_for('listar_capacitaciones') }}" class="btn btn-secondary">Cancelar</a>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-purple">Guardar</button>
+            <a href="{{ url_for('listar_capacitaciones') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 </div>
 {% endblock %}

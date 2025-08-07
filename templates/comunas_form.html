@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mt-4">
-    <a href="#" onclick="history.back();" class="btn btn-secondary mb-4">
+    <a href="{{ url_for('listar_comunas') }}" class="btn btn-secondary mb-4">
         ← Volver
     </a>
     
@@ -15,7 +15,7 @@
             <input type="text" class="form-control" id="comuna" name="comuna" value="{{ comuna.comuna if comuna }}" required>
         </div>
 
-        <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="submit" class="btn btn-purple">Guardar</button>
         <a href="{{ url_for('listar_comunas') }}" class="btn btn-secondary">Cancelar</a>
         
     </form>

@@ -2,6 +2,10 @@
 
 {% block content %}
 <div class="container mt-4">
+    <a href="{{ url_for('listar_puestos') }}" class="btn btn-secondary mb-4">
+       ← Volver
+     </a>
+    
     <h2 class="mb-4">{% if puesto %}Editar Puesto{% else %}Agregar Nuevo Puesto{% endif %}</h2>
 
     <form action="{{ url_for('gestionar_puesto', id_puestos=puesto.id_puestos if puesto else None) }}" method="post">
@@ -21,8 +25,10 @@
             <input type="number" class="form-control" id="salario_base" name="salario_base" value="{{ puesto.salario_base if puesto }}" required>
         </div>
         
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="{{ url_for('listar_puestos') }}" class="btn btn-secondary">Cancelar</a>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-purple">Guardar</button>
+            <a href="{{ url_for('listar_puestos') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 </div>
 {% endblock %}

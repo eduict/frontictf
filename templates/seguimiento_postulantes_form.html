@@ -2,13 +2,18 @@
 
 {% block content %}
 <div class="container mt-4">
+      <a href="{{ url_for('listar_seguimiento_postulantes') }}" class="btn btn-secondary mb-4">
+        ← Volver
+     </a>
+    
     <h2 class="mb-4">{% if seguimiento %}Editar Seguimiento{% else %}Agregar Nuevo Seguimiento{% endif %}</h2>
 
-    <form action="{{ url_for('gestionar_seguimiento_postulante', id_seguimiento_postulantes=seguimiento.id_segumiento_postulantes if seguimiento else None) }}" method="post">
+    <form action="{{ url_for('gestionar_seguimiento_postulante', id_seguimiento_postulantes=seguimiento.id_seguimiento_postulantes if seguimiento else None) }}" method="post">
         
         <div class="form-group mb-3">
             <label for="id_postulante">Postulante:</label>
             <select class="form-control" id="id_postulante" name="id_postulante" required>
+                <option value="">Seleccione un postulante</option>
                 {% for postulante in postulantes %}
                 <option value="{{ postulante.id_postulantes }}" {% if seguimiento and seguimiento.id_postulante == postulante.id_postulantes %}selected{% endif %}>
                     {{ postulante.nombre }} {{ postulante.apellido }}
@@ -32,8 +37,10 @@
             <textarea class="form-control" id="observaciones" name="observaciones" rows="3">{{ seguimiento.observaciones if seguimiento }}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="{{ url_for('listar_seguimiento_postulantes') }}" class="btn btn-secondary">Cancelar</a>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-purple">Guardar</button>
+            <a href="{{ url_for('listar_seguimiento_postulantes') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 </div>
 {% endblock %}

@@ -2,6 +2,9 @@
 
 {% block content %}
 <div class="container mt-4">
+     <a href="{{ url_for('listar_postulantes') }}" class="btn btn-secondary mb-4">
+       ← Volver
+     </a>
     <h2 class="mb-4">{% if postulante %}Editar Postulante{% else %}Agregar Nuevo Postulante{% endif %}</h2>
 
     <form action="{{ url_for('gestionar_postulante', id_postulantes=postulante.id_postulantes if postulante else None) }}" method="post">
@@ -99,9 +102,11 @@
             <label for="comentarios">Comentarios:</label>
             <textarea class="form-control" id="comentarios" name="comentarios" rows="3">{{ postulante.comentarios if postulante }}</textarea>
         </div>
-
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="{{ url_for('listar_postulantes') }}" class="btn btn-secondary">Cancelar</a>
+        
+        <div class="mt-4">
+            <button type="submit" class="btn btn-purple">Guardar</button>
+            <a href="{{ url_for('listar_postulantes') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 </div>
 {% endblock %}

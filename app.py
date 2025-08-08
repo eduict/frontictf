@@ -822,5 +822,98 @@ def eliminar_seguimiento_postulante(id_seguimiento_postulantes):
             conn.close()
     return redirect(url_for('listar_seguimiento_postulantes'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# --- CRUD Estudiantes ---
+@app.route('/estudiantes')
+def listar_estudiantes():
+    """
+    Muestra la lista de todos los estudiantes registrados.
+    """
+    conn = get_db_connection()
+    if conn:
+        cursor = conn.cursor(dictionary=True)
+        # Nombre de la columna corregido a 'id_estudiantes'
+        cursor.execute("SELECT * FROM estudiantes ORDER BY id_estudiantes")
+        estudiantes = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return render_template('estudiantes_list.html', estudiantes=estudiantes)
+    return redirect(url_for('index'))
+
+# ---
+@app.route('/estudiantes/gestionar', methods=['GET', 'POST'])
+@app.route('/estudiantes/gestionar/<int:id_estudiantes>', methods=['GET', 'POST'])
+def gestionar_estudiante(id_estudiantes=None):
+    """
+    Gestiona la creación (sin ID) y edición (con ID) de un estudiante.
+    """
+    if request.method == 'POST':
+        conn = get_db_connection()
+        if conn:
+            cursor = conn.cursor()
+            details = request.form
+            
+            rut = details['rut']
+            dverificador = details['dverificador']
+            nombres = details['nombres']
+            apellido_paterno = details['apellido_paterno']
+            apellido_materno = details['apellido_materno']
+            curso = details['curso']
+
+            if id_estudiantes:
+                query = """
+                    UPDATE estudiantes SET 
+                    rut=%s, dverificador=%s, nombres=%s, apellido_paterno=%s, apellido_materno=%s, curso=%s
+                    WHERE id_estudiantes=%s
+                """
+                # Parámetro de la función y consulta SQL corregidos
+                cursor.execute(query, (rut, dverificador, nombres, apellido_paterno, apellido_materno, curso, id_estudiantes))
+            else:
+                query = """
+                    INSERT INTO estudiantes 
+                    (rut, dverificador, nombres, apellido_paterno, apellido_materno, curso) 
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                """
+                cursor.execute(query, (rut, dverificador, nombres, apellido_paterno, apellido_materno, curso))
+            
+            conn.commit()
+            cursor.close()
+            conn.close()
+        return redirect(url_for('listar_estudiantes'))
+
+    estudiante = None
+    if id_estudiantes:
+        conn = get_db_connection()
+        if conn:
+            cursor = conn.cursor(dictionary=True)
+            # Consulta corregida
+            cursor.execute("SELECT * FROM estudiantes WHERE id_estudiantes = %s", (id_estudiantes,))
+            estudiante = cursor.fetchone()
+            cursor.close()
+            conn.close()
+    
+    return render_template('estudiantes_form.html', estudiante=estudiante)
+
+# ---
+@app.route('/estudiantes/eliminar/<int:id_estudiantes>', methods=['POST'])
+def eliminar_estudiante(id_estudiantes):
+    """
+    Elimina un estudiante de la base de datos.
+    """
+    conn = get_db_connection()
+    if conn:
+        cursor = conn.cursor()
+        try:
+            # Parámetro y consulta corregidos
+            cursor.execute("DELETE FROM estudiantes WHERE id_estudiantes = %s", (id_estudiantes,))
+            conn.commit()
+            flash('Estudiante eliminado correctamente.', 'success')
+        except mysql.connector.Error as err:
+            conn.rollback()
+            flash(f"Error al eliminar el estudiante: {err}", "danger")
+        finally:
+            cursor.close()
+            conn.close()
+            
+    return redirect(url_for('listar_estudiantes'))
+
+app.run(debug=True)

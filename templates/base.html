@@ -12,10 +12,36 @@
             color: #fff;
         }
 
+        /* Contenedor Flexbox para alinear el logo y el texto */
+        .navbar-brand-container {
+            display: flex;
+            align-items: center;
+        }
+
         /* Estilos de la barra de navegación */
         .navbar-brand {
             font-size: 2rem;
             font-weight: bold;
+            display: flex;
+            align-items: center; /* Alinea verticalmente el texto */
+            gap: 10px; /* Crea un pequeño espacio entre el logo y el texto */
+            text-decoration: none; /* Elimina el subrayado del enlace */
+            color: white; /* Asegura que el color del texto sea blanco */
+        }
+        
+        /* Estilos para el contenedor circular de la imagen */
+        .circular-logo {
+            width: 40px; /* Ajusta el tamaño del logo */
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px; /* Espacio a la derecha de la imagen */
+        }
+
+        .circular-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Asegura que la imagen no se deforme */
         }
 
         .nav-link:hover {
@@ -52,8 +78,8 @@
         }
     
         .table-bordered {
-           border-color: #dee2e6;
-           border-width: 5px; /* Cambia este valor al grosor que desees */
+            border-color: #dee2e6;
+            border-width: 5px; /* Cambia este valor al grosor que desees */
         }
     
         .table-striped {
@@ -90,28 +116,46 @@
             color: #333;
         }
 
-         .btn-purple {
-          background-color: #DA9CFF;
-          border-color: #DA9CFF;
-          color: #333; /* Color del texto para que sea legible en un fondo claro */
+        .btn-purple {
+            background-color: #DA9CFF;
+            border-color: #DA9CFF;
+            color: #333; /* Color del texto para que sea legible en un fondo claro */
         }
 
         /* Estilo para el efecto hover (cuando el cursor pasa por encima) */
         .btn-purple:hover {
-          background-color: #c786e6; /* Un tono un poco más oscuro */
-          border-color: #c786e6;
-          color: #333;
+            background-color: #c786e6; /* Un tono un poco más oscuro */
+            border-color: #c786e6;
+            color: #333;
         }
 
         .mainpage{
             display: flex;
+        }
+
+        .mainpage img {
+            margin-top: 15px;
+            margin-left: 13%;
+            margin-right: 10%;
+            margin-bottom: 15px;
+            height: 130px;
+            width: 130px;
+            border: solid;
+            border-color: #DA9CFF;
+            border-radius: 25%;
         }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('index') }}">Gestión de RRHH</a>
+            <div class="navbar-brand-container">
+                <div class="circular-logo">
+                    <img src="{{ url_for('static', filename='img/phantomw.png') }}" alt="Logo">
+                </div>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Gestión de RRHH</a>
+            </div>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -145,6 +189,23 @@
                             <li><a class="dropdown-item" href="{{ url_for('listar_postulantes') }}">Listado de Postulantes</a></li>
                             <li><a class="dropdown-item" href="{{ url_for('listar_seguimiento_postulantes') }}">Seguimiento de Postulantes</a></li>
                         </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownEstudiantes" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Estudiantes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownEstudiantes">
+                            <li><a class="dropdown-item" href="{{ url_for('listar_estudiantes') }}">Todos los Estudiantes</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Cursos</h6></li>
+                            
+                            <li><a class="dropdown-item" href="{{ url_for('listar_estudiantes', curso='1° medio A') }}">1° medio A</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_estudiantes', curso='1° medio B') }}">1° medio B</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_estudiantes', curso='2° medio A') }}">2° medio A</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_estudiantes', curso='2° medio B') }}">2° medio B</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_estudiantes', curso='3° medio A') }}">3° medio A</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_estudiantes', curso='4° medio A') }}">4° medio A</a></li>
+                            </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('listar_comunas') }}">Comunas</a>
